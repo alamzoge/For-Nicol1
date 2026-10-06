@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Feliz Cumpleaños Nicol!</title>
+    
+    <!-- خطوط جوجل السينمائية والأنيقة -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- مكتبة قصاصات الورق -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        /* إعدادات عامة */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', sans-serif;
+            background-color: #fdfae9; 
+            background-image: radial-gradient(#f0e6d2 1px, transparent 1px);
+            background-size: 20px 20px;
+            overflow-x: hidden;
+            color: #333;
+            scroll-behavior: smooth; 
+        }
+
+        /* شاشة البداية (Liquid Glass / Pistachio) */
+        #intro {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            /* لون الفستق الهادئ */
+            background: linear-gradient(135deg, #e8f4ec, #d4ebd9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            transition: opacity 1s ease, visibility 1s;
+        }
+
+        /* المربع الزجاجي */
+        .glass-box {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 40px 50px;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            animation: float-glass 4s ease-in-out infinite;
+        }
+
+        @keyframes float-glass {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        #intro h1 {
+            color: #4a7c59;
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.8rem;
+            margin: 0 0 15px 0;
+            text-shadow: 1px 1px 3px rgba(255,255,255,0.7);
+        }
+
+        #intro p {
+            color: #555;
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .intro-btn {
+            background: #85c79a;
+            color: white;
+            border: none;
+            padding: 12px 35px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(133, 199, 154, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .intro-btn:hover {
+            transform: scale(1.05);
+            background: #6eb784;
+            box-shadow: 0 8px 20px rgba(133, 199, 154, 0.6);
+        }
+
+        /* المحتوى الرئيسي */
+        #main-content {
+            display: none;
+            opacity: 0;
+            padding: 40px 20px 80px 20px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            animation: fadeIn 1.5s forwards;
+            position: relative;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* زينة كوستاريكا الاستوائية */
+        .decor {
+            position: absolute;
+            font-size: 3.5rem;
+            z-index: -1;
+            opacity: 0.8;
+        }
+        .top-left { top: -10px; left: -10px; }
+        .top-right { top: -10px; right: -10px; transform: scaleX(-1); }
+        .bottom-right { bottom: 50px; right: 0; }
+        .bottom-left { bottom: 50px; left: 0; }
+        
+        .tropical-vibes {
+            font-size: 2.5rem;
+            margin-bottom: -10px;
+        }
+
+        h1.title {
+            color: #ff4d6d;
+            font-family: 'Dancing Script', cursive;
+            font-size: 4.5rem;
+            margin-bottom: 0px;
+            text-shadow: 2px 2px 0px #fff, 3px 3px 0px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            color: #222;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 50px;
+        }
+
+        /* قسم الصور وتأثير الشريط اللاصق */
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 35px;
+            margin-bottom: 40px;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 15px 15px 50px 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            position: relative;
+            width: 250px;
+            transform: rotate(-4deg);
+            transition: all 0.3s ease;
+        }
+
+        .polaroid:nth-child(2) {
+            transform: rotate(5deg);
+        }
+
+        .polaroid:hover {
+            transform: scale(1.05) rotate(0deg);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+        .polaroid::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            width: 80px;
+            height: 25px;
+            background-color: rgba(255, 182, 193, 0.7);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            z-index: 2;
+        }
+
+        .polaroid:nth-child(2)::before {
+            background-color: rgba(173, 216, 230, 0.7);
+            transform: translateX(-50%) rotate(3deg);
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 3px;
+            cursor: pointer; /* مؤشر الماوس كيد للضغط */
+            transition: opacity 0.2s;
+        }
+
+        .polaroid img:hover {
+            opacity: 0.9;
+        }
+
+        .caption {
+            position: absolute;
+            bottom: 12px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+            color: #333;
+            font-weight: 700;
+        }
+
+        /* زر إظهار الرسالة */
+        .reveal-btn {
+            background: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(255, 77, 109, 0.4);
+            transition: all 0.3s ease;
+            animation: bounce-btn 2s infinite;
+            margin-top: 20px;
+        }
+
+        .reveal-btn:hover {
+            background: #ff3355;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 77, 109, 0.5);
+            animation-play-state: paused;
+        }
+
+        @keyframes bounce-btn {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* صندوق الرسالة السري */
+        .message-container {
+            display: none;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border: 3px dashed #ffb3c1;
+            margin: 40px auto 0 auto;
+            max-width: 650px;
+            text-align: left;
+            position: relative;
+            transform: scale(0.8);
+            opacity: 0;
+            scroll-margin-top: 100px;
+        }
+
+        .message-container.show {
+            display: block;
+            animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popUp {
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .message-text {
+            font-size: 1.35rem;
+            color: #444;
+            line-height: 1.8;
+            font-weight: 600;
+        }
+
+        .highlight {
+            color: #ff4d6d;
+            font-weight: 700;
+        }
+
+        /* =========================================
+           أكواد فتح الصور (Lightbox) الجديدة 
+           ========================================= */
+        .lightbox-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background-color: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .lightbox-modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox-content {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 90%;
+        }
+
+        .lightbox-img {
+            max-width: 100%;
+            max-height: 65vh;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 5px solid white;
+            animation: popImg 0.4s ease forwards;
+        }
+
+        @keyframes popImg {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .lightbox-text {
+            color: #fff;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            max-width: 600px;
+        }
+
+        /* زر الإغلاق في الجانب */
+        .lightbox-close {
+            position: absolute;
+            top: -20px;
+            right: -60px; /* تم وضعه في الجانب */
+            color: #fff;
+            font-size: 3rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: all 0.3s;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .lightbox-close:hover {
+            transform: scale(1.2) rotate(90deg);
+            color: #ff4d6d;
+        }
+
+        /* للموبايل: تعديل مكان زر الإغلاق ليكون فوق الصورة */
+        @media (max-width: 768px) {
+            .lightbox-close {
+                top: -50px;
+                right: 0;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop></audio>
+
+    <!-- شاشة البداية المحسنة (Liquid Glass) -->
+    <div id="intro">
+        <div class="glass-box">
+            <h1>Hola Nicol... ✨</h1>
+            <p>Hay algo mágico esperándote</p>
+            <button id="startBtn" class="intro-btn">Descubrir</button>
+        </div>
+    </div>
+
+    <!-- المحتوى الفعلي للموقع -->
+    <div id="main-content">
+        <div class="decor top-left">🌿</div>
+        <div class="decor top-right">🌺</div>
+        <div class="decor bottom-left">🦥</div>
+        <div class="decor bottom-right">🦜</div>
+
+        <div class="tropical-vibes">🎈 🇨🇷 🎉</div>
+        <h1 class="title">¡Feliz Cumpleaños, Nicol!</h1>
+        <p class="subtitle">Un día especial para una persona increíble ✨ ¡Pura Vida!</p>
+
+        <div class="gallery">
+            <div class="polaroid">
+                <img id="img-pic1" alt="Nicol">
+                <div class="caption">La más linda ✨</div>
+            </div>
+            
+            <div class="polaroid">
+                <img id="img-pic3" alt="Nicol">
+                <div class="caption">Sonrisa mágica 💖</div>
+            </div>
+        </div>
+
+        <button id="revealBtn" class="reveal-btn">💌 ¡Ver tu mensaje!</button>
+
+        <!-- صندوق الرسالة -->
+        <div id="secretMessage" class="message-container">
+            <p class="message-text">
+                ¡Feliz cumpleaños, Nicol! 🎂<br><br>
+                Quería hacer algo especial para alguien que ilumina cada momento. Me encanta esa energía tan tuya, tu forma de pensar y lo increíble que es tu personalidad... hay un <span class="highlight">brillo especial en ti</span> que admiro muchísimo. ✨<br><br>
+                Y claro, además de ser súper inteligente y linda, sigues dejándome sin palabras cada vez que juegas Call of Duty. 🎮<br><br>
+                Que tengas un día maravilloso, lleno de pura vida y rodeada de cosas hermosas. ¡Eres genial!
+            </p>
+        </div>
+    </div>
+
+    <!-- عنصر فتح الصور (Lightbox) -->
+    <div id="lightbox" class="lightbox-modal">
+        <div class="lightbox-content">
+            <button id="lightbox-close" class="lightbox-close">&times;</button>
+            <img id="lightbox-img" class="lightbox-img" src="" alt="Nicol Enlarged">
+            <div id="lightbox-text" class="lightbox-text"></div>
+        </div>
+    </div>
+
+    <script>
+        // دالة تحميل الملفات
+        function autoLoadFile(elementId, baseName, type) {
+            const element = document.getElementById(elementId);
+            const extensions = type === 'img' ? ['jpg', 'png', 'jpeg', 'webp', 'gif'] : ['mp3', 'wav', 'ogg', 'm4a'];
+            let i = 0;
+
+            element.onerror = function() {
+                i++;
+                if (i < extensions.length) {
+                    element.src = baseName + '.' + extensions[i];
+                }
+            };
+            element.src = baseName + '.' + extensions[0];
+        }
+
+        autoLoadFile('img-pic1', 'pic1', 'img');
+        autoLoadFile('img-pic3', 'pic3', 'img');
+        autoLoadFile('bg-music', 'm1', 'audio');
+
+        // التفاعل مع شاشة البداية 
+        document.getElementById('startBtn').addEventListener('click', function() {
+            let bgMusic = document.getElementById('bg-music');
+            bgMusic.play().catch(e => console.log("Audio blocked:", e));
+            
+            let intro = document.getElementById('intro');
+            intro.style.opacity = '0';
+            setTimeout(() => {
+                intro.style.visibility = 'hidden';
+                intro.style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            }, 1000);
+        });
+
+        // التفاعل مع زر الرسالة (النزول + قصاصات تتوقف بعد 5 ثوانٍ)
+        document.getElementById('revealBtn').addEventListener('click', function() {
+            this.style.display = 'none';
+            let messageBox = document.getElementById('secretMessage');
+            messageBox.classList.add('show');
+
+            setTimeout(() => {
+                messageBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100); 
+
+            // نظام القصاصات الذي يتوقف بعد 5 ثوان
+            let duration = 5 * 1000;
+            let animationEnd = Date.now() + duration;
+            let defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            let interval = setInterval(function() {
+                let timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                let particleCount = 50 * (timeLeft / duration);
+                // قصاصات بحجم مناسب وتنزل من الأعلى بجمال
+                confetti(Object.assign({}, defaults, { particleCount,
+                    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+                    colors: ['#ff4d6d', '#85c79a', '#f0e6d2', '#fff']
+                }));
+                confetti(Object.assign({}, defaults, { particleCount,
+                    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+                    colors: ['#ff4d6d', '#85c79a', '#f0e6d2', '#fff']
+                }));
+            }, 250);
+        });
+
+        // =========================================
+        // التفاعل مع فتح الصور (Lightbox)
+        // =========================================
+        
+        // النصوص الجميلة المرتبطة بكل صورة
+        const imageTexts = {
+            'img-pic1': "Tu belleza no es solo lo que veo, sino esa luz especial que tienes en los ojos y en el alma. ✨",
+            'img-pic3': "Esa sonrisa tuya tiene el superpoder de arreglar cualquier día. ¡Nunca dejes de sonreír! 💖"
+        };
+
+        const polaroids = document.querySelectorAll('.polaroid img');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxText = document.getElementById('lightbox-text');
+        const lightboxClose = document.getElementById('lightbox-close');
+
+        // عند الضغط على أي صورة
+        polaroids.forEach(img => {
+            img.addEventListener('click', function() {
+                lightboxImg.src = this.src; // نقل مصدر الصورة
+                lightboxText.innerText = imageTexts[this.id]; // وضع النص المناسب
+                lightbox.classList.add('show'); // إظهار الشاشة
+            });
+        });
+
+        // إغلاق الصورة عند الضغط على زر X
+        lightboxClose.addEventListener('click', () => {
+            lightbox.classList.remove('show');
+        });
+
+        // إغلاق الصورة عند الضغط في أي مكان خارجها
+        lightbox.addEventListener('click', (e) => {
+            if(e.target === lightbox) {
+                lightbox.classList.remove('show');
+            }
+        });
+
+    </script>
+</body>
+</html>
